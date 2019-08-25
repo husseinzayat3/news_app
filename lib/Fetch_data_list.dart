@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:convert';
 import 'package:news_app/DetailsPage.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 String base_url = "https://newsapi.org/v2/top-headlines?country=";
@@ -107,22 +107,23 @@ class _MainFetchDataState extends State<MainFetchData> {
                       border: new Border(
                           right: new BorderSide(
                               width: 1.0, color: Colors.white24))),
-                  child:Image.network(children[index]['urlToImage']),
+                  child:Image.network(children[index]['urlToImage'],width:80 ,height: 80),
 //                  Icon(Icons.autorenew, color: Colors.white),
                 ),
                 title: Text(
-                  children[index]['source']['title']!=null
-                      ? children[index]['source']['title']
-                     : children[index]['source']['name']
+                  children[index]['title']
+//                      ? children[index]['source']['name']
+//                     : children[index]['source']['title']
                   ,
-                  maxLines: 3,
+                  maxLines: 5,
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
-                subtitle: Row(
+                subtitle: Column(
                   children: <Widget>[
 //                    Icon(Icons.linear_scale, color: Colors.yellowAccent),
+                    Text(children[index]['source']['id']!=null ?children[index]['source']['id']:children[index]['source']['name'],style: TextStyle(color: Colors.white),),
                     Text(children[index]['publishedAt'], style: TextStyle(color: Colors.white))
                   ],
                 ),
