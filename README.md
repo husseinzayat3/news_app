@@ -1,6 +1,6 @@
 # news_app
 
-News Flutter application.
+Application to show google news for some countries , Flutter application
 
 ## Getting Started
 
