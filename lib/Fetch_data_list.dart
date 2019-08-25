@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 String base_url = "https://newsapi.org/v2/top-headlines?country=";
 String api_key="&apiKey=4bddb6a967614bc787b6f52c7a178382";
 String cn="en";
+String no_image="upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
 //https://newsapi.org/v2/top-headlines?country=de&apiKey=4bddb6a967614bc787b6f52c7a178382
 class MainFetchData extends StatefulWidget {
   final String text;
@@ -107,7 +108,7 @@ class _MainFetchDataState extends State<MainFetchData> {
                       border: new Border(
                           right: new BorderSide(
                               width: 1.0, color: Colors.white24))),
-                  child:Image.network(children[index]['urlToImage'],width:80 ,height: 80),
+                  child:Image.network(children[index]['urlToImage']!=null?children[index]['urlToImage']:no_image,width:80 ,height: 80),
 //                  Icon(Icons.autorenew, color: Colors.white),
                 ),
                 title: Text(
