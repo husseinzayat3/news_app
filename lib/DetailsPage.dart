@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'dart:convert';
-import 'package:news_app/Tools.dart';
+import 'package:news_app/Database.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 /*

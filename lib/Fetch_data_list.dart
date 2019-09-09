@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'Database.dart';
 import 'dart:convert';
 import 'package:news_app/DetailsPage.dart';
 //import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-
+var db=new DatabaseHelper();
 String base_url = "https://newsapi.org/v2/top-headlines?country=";
 String api_key="&apiKey=4bddb6a967614bc787b6f52c7a178382";
 String cn="en";
@@ -40,8 +40,10 @@ class _MainFetchDataState extends State<MainFetchData> {
       cn = "gb";
     }else if(country=="France"){
       cn = "fr";
-    }else if(country=="Germany"){
+    }else if(country=="germany"){
       cn = "de";
+    }else{
+      cn=db.getSymbol(country);
     }
     final response =
     await http.get(base_url+cn+api_key);
@@ -130,7 +132,8 @@ class _MainFetchDataState extends State<MainFetchData> {
                 ),
                 trailing:
                 Icon(Icons.keyboard_arrow_right, color: Colors.white,
-                    size: 30.0),
+                    size: 30.0)
+              ,
               onTap: () {
                 Navigator.push(
                   context,
