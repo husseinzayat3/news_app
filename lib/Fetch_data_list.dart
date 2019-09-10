@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 var db=new DatabaseHelper();
 String base_url = "https://newsapi.org/v2/top-headlines?country=";
 String api_key="&apiKey=4bddb6a967614bc787b6f52c7a178382";
-String cn="en";
+
 String no_image="upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
 //https://newsapi.org/v2/top-headlines?country=de&apiKey=4bddb6a967614bc787b6f52c7a178382
 class MainFetchData extends StatefulWidget {
@@ -22,36 +22,44 @@ class MainFetchData extends StatefulWidget {
 
 class _MainFetchDataState extends State<MainFetchData> {
    String country;
-
+//   final String concode;
   _MainFetchDataState(this.country);
+
+
 
 //  static List data = List();
   static List children = List();
+  static List code=List() ;
   var isLoading = false;
 //  var first=false;
 
   _fetchData() async {
     setState(() {
       isLoading = true;
-    });
-    if(country == "Italy"){
+    });/*
+       if(country == "Italy"){
       cn = "it";
     }else if(country=="UK"){
       cn = "gb";
     }else if(country=="France"){
       cn = "fr";
-    }else if(country=="germany"){
+    }*//*else if(country=="germany"){
       cn = "de";
-    }else{
-      cn=db.getSymbol(country);
-    }
+    }*//*else{
+//      cn= await db.getSymbol(country);
+
+    }*/
+//   cn=country;
+    _getCode(country);
+    String cn=code[0]['alpha2Code'];
+    debugPrint("-------"+cn);
     final response =
     await http.get(base_url+cn+api_key);
     if (response.statusCode == 200) {
       children = json.decode(response.body)["articles"];
 //      data = children["source"];
 
-
+      debugPrint(children.length.toString());
 //      print(children.runtimeType.toString());
 //      print(children['data'].toString());
       setState(() {
@@ -93,7 +101,7 @@ class _MainFetchDataState extends State<MainFetchData> {
     child: ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: 10,
+      itemCount: children.length,
       controller: _controller,
       itemBuilder: (BuildContext context, int index) {
         return Card(
@@ -172,10 +180,30 @@ class _MainFetchDataState extends State<MainFetchData> {
 
   }
 
+ _getCode(String name) async{
+String url="https://restcountries.eu/rest/v2/name/"+name;
+    final response1 =
+    await http.get(url);
+    if (response1.statusCode == 200) {
+      code = json.decode(response1.body);
+      debugPrint(code[0].toString());
+//      data = children["source"];
+//      alpha2Code
+//      return code[0]['alpha2Code'];
+//      print(children.runtimeType.toString());
+//      print(children['data'].toString());
+      setState(() {
+        isLoading = false;
+      });
+    } else {
+      throw Exception('Failed to load photos');
+    }
+
+    // https://restcountries.eu/rest/v2/name/{name}
+  }
 
 
 }
-
 
 
 

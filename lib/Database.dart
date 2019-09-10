@@ -140,11 +140,12 @@ class DatabaseHelper {
     }
     return null;
   }
-
   getSymbol(String name) async {
     final db = await database;
-    var res =await  db.query("country", where: "name = ?", whereArgs: [name],columns: [columnSymbol]);
+//    var res =await  db.query("MyList", where: "name = ?", whereArgs: [name],columns: [columnSymbol]);
+    var result = await db.rawQuery("SELECT * FROM $tableWords WHERE name=$name",);
 
-    return res.isNotEmpty ? Country.fromMap(res.first) : Null ;
+    return result.isNotEmpty ? Country.fromMap(result.first) : Null ;
+//    return result.toString();
   }
 }

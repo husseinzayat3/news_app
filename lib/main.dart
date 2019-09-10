@@ -67,8 +67,6 @@ class HomeScreen extends StatelessWidget {
                         child: ListTile(
                           title: Text(item.row[1]),
                         onTap: () {
-                          /*Navigator.of(context).push(new MaterialPageRoute(builder: (_)=>new MainFetchData(text: item.row[1])),)
-                              .then((val)=>val?_getRequests():null);*/
                           Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) =>
