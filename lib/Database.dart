@@ -100,12 +100,12 @@ class DatabaseHelper {
 
   // Database helper methods:
 
-  Future<int> insert(String word) async {
+  Future<int> insert(int count,String word) async {
 //    count++;
     Database db = await database;
 //    int id = await db.insert(tableWords, word.toMap());
     int id = await db.rawInsert(' INSERT INTO $tableWords($columnId, $columnName) VALUES(?, ?)',
-    ['', word]);
+    [count, word]);
     return id;
   }
 /*
