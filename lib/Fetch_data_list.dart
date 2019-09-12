@@ -101,7 +101,7 @@ class _MainFetchDataState extends State<MainFetchData> {
     child: ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: children.length,
+      itemCount: 10,
       controller: _controller,
       itemBuilder: (BuildContext context, int index) {
         return Card(

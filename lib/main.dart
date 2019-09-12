@@ -24,7 +24,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
+/* TO DO
+  *Restart all the activity when HomeScreen is loaded
+  * Home.dart -> spinner to add country to my list
+  * Fetch_data_list.dart -> Load from the first time
+  *
+ */
 
 class HomeScreen extends StatelessWidget {
   _getRequests()async{
@@ -46,7 +51,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
 //                BuildContext ctxt=context;
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyCustomForm())
+                  MaterialPageRoute(builder: (context) => CountryWidget())
                 );
               }
             )

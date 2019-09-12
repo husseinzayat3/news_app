@@ -7,14 +7,14 @@ import 'package:path_provider/path_provider.dart';
 final String tableWords = 'MyList';
 final String columnId = '_id';
 final String columnName = 'name';
-final String columnSymbol = 'symbol';
-
+//final String columnSymbol = 'symbol';
+//int count=1;
 // data model class
 class Country {
 
   int id;
   String name;
-  String symbol;
+//  String symbol;
 
   Country();
 
@@ -22,14 +22,14 @@ class Country {
   Country.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     name = map[columnName];
-    symbol = map[columnSymbol];
+//    symbol = map[columnSymbol];
   }
 
   // convenience method to create a Map from this Word object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnName: name,
-      columnSymbol: symbol
+//      columnSymbol: symbol
     };
     if (id != null) {
       map[columnId] = id;
@@ -93,17 +93,19 @@ class DatabaseHelper {
     await db.execute('''
               CREATE TABLE $tableWords (
                 $columnId INTEGER PRIMARY KEY,
-                $columnName TEXT NOT NULL,
-                $columnSymbol TEXT NOT NULL
+                $columnName TEXT NOT NULL
               )
               ''');
   }
 
   // Database helper methods:
 
-  Future<int> insert(Country word) async {
+  Future<int> insert(String word) async {
+//    count++;
     Database db = await database;
-    int id = await db.insert(tableWords, word.toMap());
+//    int id = await db.insert(tableWords, word.toMap());
+    int id = await db.rawInsert(' INSERT INTO $tableWords($columnId, $columnName) VALUES(?, ?)',
+    ['', word]);
     return id;
   }
 /*
@@ -132,7 +134,7 @@ class DatabaseHelper {
   Future<Country> queryWord(int id) async {
     Database db = await database;
     List<Map> maps = await db.query(tableWords,
-        columns: [columnId, columnName, columnSymbol],
+        columns: [columnId, columnName],
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.length > 0) {
