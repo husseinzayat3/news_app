@@ -6,10 +6,12 @@ import 'package:news_app/DetailsPage.dart';
 import 'package:http/http.dart' as http;
 var db=new DatabaseHelper();
 String base_url = "https://newsapi.org/v2/top-headlines?country=";
-String api_key="&apiKey=4bddb6a967614bc787b6f52c7a178382";
-
+String all_api_key="&apiKey=4bddb6a967614bc787b6f52c7a178382";
+int x=1;
+String sport_api_key="&category=sports&apiKey=4bddb6a967614bc787b6f52c7a178382";
 String no_image="upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
 //https://newsapi.org/v2/top-headlines?country=de&apiKey=4bddb6a967614bc787b6f52c7a178382
+String api_key;
 class MainFetchData extends StatefulWidget {
   final String text;
 
@@ -25,16 +27,48 @@ class _MainFetchDataState extends State<MainFetchData> {
 //   final String concode;
   _MainFetchDataState(this.country);
 
+  List Categories =
+  ["All", "Sports"];
 
+  List<DropdownMenuItem<String>> _dropDownMenuItems;
+  String _currentCat;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
+
+    _dropDownMenuItems = getDropDownMenuItems();
+    _currentCat = _dropDownMenuItems[0].value;
+    _fetchData();
+//    api_key=all_api_key;
+
+  }
+
+  List<DropdownMenuItem<String>> getDropDownMenuItems() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String cat in Categories) {
+      items.add(new DropdownMenuItem(
+          value: cat,
+          child: new Text(cat)
+      ));
+    }
+    return items;
+  }
+
+//  debugPrint("-------"+cn);
 
 //  static List data = List();
   static List children = List();
-  static List code=List() ;
+
   var isLoading = false;
+//  String cn;
 //  var first=false;
 
   _fetchData() async {
     setState(() {
+
       isLoading = true;
     });/*
        if(country == "Italy"){
@@ -50,11 +84,17 @@ class _MainFetchDataState extends State<MainFetchData> {
 
     }*/
 //   cn=country;
-    _getCode(country);
-    String cn=code[0]['alpha2Code'];
-    debugPrint("-------"+cn);
+
+    if(_currentCat=="All") {
+    api_key = all_api_key;
+      }
+    if(_currentCat.contains("Sports")) {
+        api_key = sport_api_key;
+      }
+    debugPrint("--------cat-----"+_currentCat);
+    debugPrint("--------country-------"+country);
     final response =
-    await http.get(base_url+cn+api_key);
+    await http.get(base_url+country+api_key);
     if (response.statusCode == 200) {
       children = json.decode(response.body)["articles"];
 //      data = children["source"];
@@ -64,6 +104,7 @@ class _MainFetchDataState extends State<MainFetchData> {
 //      print(children['data'].toString());
       setState(() {
         isLoading = false;
+//        x=children.length.toInt();
       });
     } else {
       throw Exception('Failed to load photos');
@@ -88,13 +129,6 @@ class _MainFetchDataState extends State<MainFetchData> {
     }
   }
 
-  @override
-  void initState() {
-    _controller = ScrollController();
-    _controller.addListener(_scrollListener);
-    _fetchData();
-    super.initState();
-  }
 
 
   final makeBody = Container(
@@ -149,6 +183,7 @@ class _MainFetchDataState extends State<MainFetchData> {
                     builder: (context) => WebViewContainer(url: children[index]['url'],),
                   ),
                 );
+                debugPrint("-----------"+x.toString());
               },
       ),
           ),
@@ -163,7 +198,15 @@ class _MainFetchDataState extends State<MainFetchData> {
     return Scaffold(
         appBar: AppBar(
           title: Text("News"),
+          actions: <Widget>[
+          new DropdownButton(
+            value: _currentCat,
+            items: _dropDownMenuItems,
+            onChanged : changedDropDownItem,
+          ),
+      ]
         ),
+
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(8.0),
           child: RaisedButton(
@@ -180,27 +223,19 @@ class _MainFetchDataState extends State<MainFetchData> {
 
   }
 
- _getCode(String name) async{
-String url="https://restcountries.eu/rest/v2/name/"+name;
-    final response1 =
-    await http.get(url);
-    if (response1.statusCode == 200) {
-      code = json.decode(response1.body);
-      debugPrint(code[0].toString());
-//      data = children["source"];
-//      alpha2Code
-//      return code[0]['alpha2Code'];
-//      print(children.runtimeType.toString());
-//      print(children['data'].toString());
-      setState(() {
-        isLoading = false;
-      });
-    } else {
-      throw Exception('Failed to load photos');
-    }
-
-    // https://restcountries.eu/rest/v2/name/{name}
+  void changedDropDownItem(String category) {
+    setState(() {
+//      if(category.contains("All")) {
+        _currentCat = category;
+        _fetchData();
+//      }
+//      if(category.contains("Sports")) {
+//        _currentCat = sport_api_key;
+//        _fetchData();
+//      }
+    });
   }
+
 
 
 }

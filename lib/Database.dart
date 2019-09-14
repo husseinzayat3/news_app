@@ -4,8 +4,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 // database table and column names
-final String tableWords = 'MyList';
-final String columnId = '_id';
+final String tableWords = 'MyCountryList';
+//final String columnId = '_id';
 final String columnName = 'name';
 //final String columnSymbol = 'symbol';
 //int count=1;
@@ -20,13 +20,13 @@ class Country {
 
   // convenience constructor to create a Word object
   Country.fromMap(Map<String, dynamic> map) {
-    id = map[columnId];
+//    id = map[columnId];
     name = map[columnName];
 //    symbol = map[columnSymbol];
   }
 
   // convenience method to create a Map from this Word object
-  Map<String, dynamic> toMap() {
+  /*Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnName: name,
 //      columnSymbol: symbol
@@ -35,7 +35,7 @@ class Country {
       map[columnId] = id;
     }
     return map;
-  }
+  }*/
 }
 class DBProvider {
   DBProvider._();
@@ -92,8 +92,7 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
               CREATE TABLE $tableWords (
-                $columnId INTEGER PRIMARY KEY,
-                $columnName TEXT NOT NULL
+                $columnName TEXT PRIMARY KEY
               )
               ''');
   }
@@ -104,8 +103,8 @@ class DatabaseHelper {
 //    count++;
     Database db = await database;
 //    int id = await db.insert(tableWords, word.toMap());
-    int id = await db.rawInsert(' INSERT INTO $tableWords($columnId, $columnName) VALUES(?, ?)',
-    [count, word]);
+    int id = await db.rawInsert(' INSERT INTO $tableWords($columnName) VALUES(?)',
+    [ word]);
     return id;
   }
 /*
@@ -131,7 +130,7 @@ class DatabaseHelper {
 
    return result.toList();
   }
-  Future<Country> queryWord(int id) async {
+ /* Future<Country> queryWord(int id) async {
     Database db = await database;
     List<Map> maps = await db.query(tableWords,
         columns: [columnId, columnName],
@@ -149,5 +148,5 @@ class DatabaseHelper {
 
     return result.isNotEmpty ? Country.fromMap(result.first) : Null ;
 //    return result.toString();
-  }
+  }*/
 }

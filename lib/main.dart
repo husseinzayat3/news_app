@@ -1,14 +1,16 @@
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:http/http.dart' as http;
 import 'Fetch_data_list.dart';
 import 'Database.dart';
 import 'Home.dart';
+
 
 void main() => runApp(MyApp());
 var db=new DatabaseHelper();
@@ -26,22 +28,20 @@ class MyApp extends StatelessWidget {
 
 /* TO DO
   *Restart all the activity when HomeScreen is loaded
-  * Home.dart -> spinner to add country to my list
   * Fetch_data_list.dart -> Load from the first time
   *
  */
 
 class HomeScreen extends StatelessWidget {
-  _getRequests()async{
 
-  }
+static List code=List() ;
 //  BuildContext ctxt=context;
   @override
   Widget build(BuildContext context) {
  /*   return MaterialApp(
         title: 'News Application',
         home:*/
-      return Scaffold(
+      return new Scaffold(
 
           appBar: AppBar(title: Text("Choose Country"),
           actions: <Widget>[
@@ -67,17 +67,23 @@ class HomeScreen extends StatelessWidget {
                     itemCount: snapshot.data.length,
                     itemBuilder: (_, int position) {
                       final item = snapshot.data[position];
+
                       //get your item data here ...
                       return Card(
                         child: ListTile(
-                          title: Text(item.row[1]),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>
-                                  MainFetchData(text: item.row[1],))
-                          );
-                        }
+                            title: Text(item.row[0]),
+                            onTap: () {
+                              String cn;
+                              Future<String> cc=_getCode(item.row[0]);
+                              cc.then((cn){
+                              debugPrint("--------cn---------"+cn.toString());
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) =>
+                                      MainFetchData(text: cn.toString()))
+                              );
+                            });
+                                  }
                         ),
                       );
                     },
@@ -109,9 +115,34 @@ class HomeScreen extends StatelessWidget {
 //        )
 //    );
   }
+/*  getListView() async{
 
+  }*/
+
+ Future<String> _getCode(String name) async{
+    String url="https://restcountries.eu/rest/v2/name/"+name;
+    final response1 =
+    await http.get(url);
+    if (response1.statusCode == 200) {
+      code = json.decode(response1.body);
+      debugPrint(code[0].toString());
+     return code[0]['alpha2Code'];
+
+//      data = children["source"];
+//      alpha2Code
+//      return code[0]['alpha2Code'];
+//      print(children.runtimeType.toString());
+//      print(children['data'].toString());
+
+    } else {
+      throw Exception('Failed to load photos');
+    }
+
+    // https://restcountries.eu/rest/v2/name/{name}
+  }
 
 }
+
 /*
 
  getListElements(){
