@@ -72,6 +72,7 @@ static List code=List() ;
                       return Card(
                         child: ListTile(
                             title: Text(item.row[0]),
+                            trailing: Icon(Icons.info),
                             onTap: () {
                               String cn;
                               Future<String> cc=_getCode(item.row[0]);

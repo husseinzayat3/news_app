@@ -115,10 +115,10 @@ class DatabaseHelper {
     return result;
   }
 */
- getCount() async {
+ Future<int> getCount() async {
     Database db =await database;
     var result = await db.rawQuery('SELECT COUNT(*) FROM $tableWords');
-
+    return result.length;
 //    return result.length();
   }
 

@@ -7,11 +7,14 @@ import 'package:http/http.dart' as http;
 var db=new DatabaseHelper();
 String base_url = "https://newsapi.org/v2/top-headlines?country=";
 String all_api_key="&apiKey=4bddb6a967614bc787b6f52c7a178382";
-int x=1;
+String business_api_key="&category=business&apiKey=4bddb6a967614bc787b6f52c7a178382";
+String tech_api_key="&category=technology&apiKey=4bddb6a967614bc787b6f52c7a178382";
+//int x=1;
 String sport_api_key="&category=sports&apiKey=4bddb6a967614bc787b6f52c7a178382";
 String no_image="upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
 //https://newsapi.org/v2/top-headlines?country=de&apiKey=4bddb6a967614bc787b6f52c7a178382
 String api_key;
+int value=10;
 class MainFetchData extends StatefulWidget {
   final String text;
 
@@ -28,7 +31,7 @@ class _MainFetchDataState extends State<MainFetchData> {
   _MainFetchDataState(this.country);
 
   List Categories =
-  ["All", "Sports"];
+  ["All", "Sports","Business","Technology"];
 
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _currentCat;
@@ -57,39 +60,29 @@ class _MainFetchDataState extends State<MainFetchData> {
     return items;
   }
 
-//  debugPrint("-------"+cn);
-
 //  static List data = List();
   static List children = List();
 
+
   var isLoading = false;
-//  String cn;
-//  var first=false;
 
   _fetchData() async {
     setState(() {
 
       isLoading = true;
-    });/*
-       if(country == "Italy"){
-      cn = "it";
-    }else if(country=="UK"){
-      cn = "gb";
-    }else if(country=="France"){
-      cn = "fr";
-    }*//*else if(country=="germany"){
-      cn = "de";
-    }*//*else{
-//      cn= await db.getSymbol(country);
-
-    }*/
-//   cn=country;
+    });
 
     if(_currentCat=="All") {
     api_key = all_api_key;
       }
     if(_currentCat.contains("Sports")) {
         api_key = sport_api_key;
+      }
+      if(_currentCat.contains("Business")){
+        api_key=business_api_key;
+      }
+      if(_currentCat.contains("technology")){
+        api_key=tech_api_key;
       }
     debugPrint("--------cat-----"+_currentCat);
     debugPrint("--------country-------"+country);
@@ -100,6 +93,9 @@ class _MainFetchDataState extends State<MainFetchData> {
 //      data = children["source"];
 
       debugPrint(children.length.toString());
+
+      value=children.length;
+
 //      print(children.runtimeType.toString());
 //      print(children['data'].toString());
       setState(() {
@@ -135,7 +131,7 @@ class _MainFetchDataState extends State<MainFetchData> {
     child: ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: 10,
+      itemCount:value ,
       controller: _controller,
       itemBuilder: (BuildContext context, int index) {
         return Card(
@@ -183,7 +179,7 @@ class _MainFetchDataState extends State<MainFetchData> {
                     builder: (context) => WebViewContainer(url: children[index]['url'],),
                   ),
                 );
-                debugPrint("-----------"+x.toString());
+//                debugPrint("-----------"+x.toString());
               },
       ),
           ),
