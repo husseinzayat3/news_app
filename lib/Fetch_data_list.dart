@@ -81,7 +81,7 @@ class _MainFetchDataState extends State<MainFetchData> {
       if(_currentCat.contains("Business")){
         api_key=business_api_key;
       }
-      if(_currentCat.contains("technology")){
+      if(_currentCat.contains("Technology")){
         api_key=tech_api_key;
       }
     debugPrint("--------cat-----"+_currentCat);

@@ -130,6 +130,10 @@ class DatabaseHelper {
 
    return result.toList();
   }
+  deleteCountry(String name) async {
+    final db = await database;
+    db.delete("$tableWords", where: "$columnName = ?", whereArgs: [name]);
+  }
  /* Future<Country> queryWord(int id) async {
     Database db = await database;
     List<Map> maps = await db.query(tableWords,

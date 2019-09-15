@@ -72,7 +72,21 @@ static List code=List() ;
                       return Card(
                         child: ListTile(
                             title: Text(item.row[0]),
-                            trailing: Icon(Icons.info),
+                            trailing: GestureDetector(onTap: (){debugPrint("Delete");
+                            db.deleteCountry(item.row[0].toString());
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) =>
+                                    HomeScreen())
+                            );},
+                                  child: Container(
+                          width: 48,
+                          height: 48,
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          alignment: Alignment.center,
+                          child: Icon(Icons.delete),
+                        ),
+                            ),
                             onTap: () {
                               String cn;
                               Future<String> cc=_getCode(item.row[0]);
