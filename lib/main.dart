@@ -51,7 +51,7 @@ static List code=List() ;
               onPressed: () {
 //                BuildContext ctxt=context;
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen())
+                  MaterialPageRoute(builder: (context) => MainFetchData())
                 );
               }
             )
@@ -158,34 +158,33 @@ static List code=List() ;
 
 }
 
-/*
-
- getListElements(){
-  var items = ["France","UK","Italy","Germany"];
-  return items;
-}
-
- getListView() async {
-
-  var listItems=getListElements();
-  var listview = ListView.builder(
-
-      itemCount: listItems.length ,
-      itemBuilder: (context,index){
-        return ListTile(
-          leading: Icon(Icons.arrow_right),
-          title: Text(listItems[index]),
-          onTap: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MainFetchData(text: listItems[index],))
-            );
-          },
-        );
-
-      }
-  );
- return listview;
-
-
-}*/
+//
+// getListElements(){
+//  var items = ["France","UK","Italy","Germany"];
+//  return items;
+//}
+//
+// getListView() async {
+//
+//  var listItems=getListElements();
+//  var listview = ListView.builder(
+//
+//      itemCount: listItems.length ,
+//      itemBuilder: (context,index){
+//        return ListTile(
+//          leading: Icon(Icons.arrow_right),
+//          title: Text(listItems[index]),
+//          onTap: (){
+//            Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => MainFetchData(text: listItems[index],))
+//            );
+//          },
+//        );
+//
+//      }
+//  );
+// return listview;
+//
+//
+//}*/
