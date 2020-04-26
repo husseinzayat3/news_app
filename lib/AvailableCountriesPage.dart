@@ -6,6 +6,8 @@ import 'package:news_app/DetailsPage.dart';
 
 import 'package:flutter/cupertino.dart';
 
+var db=new DatabaseHelper();
+
 class CountriesList extends StatefulWidget {
 
 
@@ -55,6 +57,7 @@ class _CountriesListState extends State<CountriesList> {
             child: Text("Add Country!"),
             onPressed: (){
               print('countryyyy_____----->'+ fav_country);
+              db.insert(0, fav_country);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) =>
