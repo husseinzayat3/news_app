@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'AvailableCountriesPage.dart';
 import 'Fetch_data_list.dart';
 import 'Database.dart';
 //import 'Home.dart';
@@ -51,7 +52,7 @@ static List code=List() ;
               onPressed: () {
 //                BuildContext ctxt=context;
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MainFetchData())
+                  MaterialPageRoute(builder: (context) => CountriesList())
                 );
               }
             )
