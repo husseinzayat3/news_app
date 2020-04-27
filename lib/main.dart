@@ -42,6 +42,7 @@ static List code=List() ;
  /*   return MaterialApp(
         title: 'News Application',
         home:*/
+
       return new Scaffold(
 
           appBar: AppBar(title: Text("Choose Country"),
@@ -111,7 +112,7 @@ static List code=List() ;
               ),
       );
 
-
+//Trying
 //              getListView(),
       /*   floatingActionButton: FloatingActionButton(
 //       Padding(
