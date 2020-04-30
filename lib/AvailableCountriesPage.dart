@@ -58,10 +58,11 @@ class _CountriesListState extends State<CountriesList> {
             onPressed: (){
               print('countryyyy_____----->'+ fav_country);
               db.insert(0, fav_country);
-                Navigator.push(
+                /*Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) =>
-                  HomeScreen()));
+                  HomeScreen()));*/
+                Navigator.pop(context);
             },
           )
         ],
