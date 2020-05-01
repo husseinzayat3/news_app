@@ -59,6 +59,11 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
     if (response.statusCode == 200) {
       print(response.body);
       children = json.decode(response.body)["results"][0];
+      debugPrint("-------total cases----"+children["total_cases"].toString());
+      debugPrint("-------recovered----"+children["total_recovered"].toString());
+      //mouss: 3ende yeha hon lal kel wfeye 3rdon deghre
+
+
 //      data = children["source"];
 
 //      debugPrint(children.length.toString());
@@ -95,7 +100,7 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
               title: Text("Total Cases"
                 // TODO: APIValueKEY
                 ,
-                maxLines: 2,
+                maxLines: 9,
                 style: TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
               ),
