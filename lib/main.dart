@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'AvailableCountriesPage.dart';
 import 'Fetch_data_list.dart';
 import 'Database.dart';
 //import 'Home.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
  */
 
 class HomeScreen extends StatelessWidget {
-
+//just trying to commit
 static List code=List() ;
 //  BuildContext ctxt=context;
   @override
@@ -41,6 +42,7 @@ static List code=List() ;
  /*   return MaterialApp(
         title: 'News Application',
         home:*/
+
       return new Scaffold(
 
           appBar: AppBar(title: Text("Choose Country"),
@@ -51,7 +53,7 @@ static List code=List() ;
               onPressed: () {
 //                BuildContext ctxt=context;
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen())
+                  MaterialPageRoute(builder: (context) => CountriesList())
                 );
               }
             )
@@ -110,7 +112,7 @@ static List code=List() ;
               ),
       );
 
-
+//Trying
 //              getListView(),
       /*   floatingActionButton: FloatingActionButton(
 //       Padding(
@@ -158,34 +160,33 @@ static List code=List() ;
 
 }
 
-/*
-
- getListElements(){
-  var items = ["France","UK","Italy","Germany"];
-  return items;
-}
-
- getListView() async {
-
-  var listItems=getListElements();
-  var listview = ListView.builder(
-
-      itemCount: listItems.length ,
-      itemBuilder: (context,index){
-        return ListTile(
-          leading: Icon(Icons.arrow_right),
-          title: Text(listItems[index]),
-          onTap: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MainFetchData(text: listItems[index],))
-            );
-          },
-        );
-
-      }
-  );
- return listview;
-
-
-}*/
+//
+// getListElements(){
+//  var items = ["France","UK","Italy","Germany"];
+//  return items;
+//}
+//
+// getListView() async {
+//
+//  var listItems=getListElements();
+//  var listview = ListView.builder(
+//
+//      itemCount: listItems.length ,
+//      itemBuilder: (context,index){
+//        return ListTile(
+//          leading: Icon(Icons.arrow_right),
+//          title: Text(listItems[index]),
+//          onTap: (){
+//            Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => MainFetchData(text: listItems[index],))
+//            );
+//          },
+//        );
+//
+//      }
+//  );
+// return listview;
+//
+//
+//}*/
