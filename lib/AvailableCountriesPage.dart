@@ -25,8 +25,8 @@ class _CountriesListState extends State<CountriesList> {
     "Italy",
     "Germany",
     "USA",
-    "Lebanon",
-    "Russia"
+    "France",
+    "China"
   ];
 
   @override
@@ -58,11 +58,7 @@ class _CountriesListState extends State<CountriesList> {
             onPressed: (){
               print('countryyyy_____----->'+ fav_country);
               db.insert(0, fav_country);
-                /*Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) =>
-                  HomeScreen()));*/
-                Navigator.pop(context);
+              Navigator.pop(context);
             },
           )
         ],
