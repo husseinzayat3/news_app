@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:news_app/CoronaVirusPage.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:path/path.dart';
@@ -56,7 +57,18 @@ static List code=List() ;
                   MaterialPageRoute(builder: (context) => CountriesList())
                 );
               }
+            ),
+            IconButton(
+                icon: Icon(Icons.warning),
+                onPressed: () {
+//                BuildContext ctxt=context;
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CoronaVirusPage())
+                  );
+                }
             )
+
+
           ],
           ),
 
