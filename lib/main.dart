@@ -59,6 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
 //                BuildContext ctxt=context;
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CountriesList()));
+              }),
+          IconButton(
+              icon: Icon(Icons.warning),
+              onPressed: () {
+//                BuildContext ctxt=context;
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CoronaVirusPage()));
               })
         ],
       ),
