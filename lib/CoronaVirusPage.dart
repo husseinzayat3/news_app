@@ -36,7 +36,7 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Coronavirus Statistics"),
+        title: Text("Coronavirus Live Statistics(Global)",style: TextStyle(fontSize: 10,color: Colors.red),),
         actions: <Widget>[
 
 
