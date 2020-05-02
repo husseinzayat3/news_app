@@ -89,7 +89,7 @@ class _MainFetchDataState extends State<MainFetchData> {
     final response =
     await http.get(base_url+country+api_key);
     if (response.statusCode == 200) {
-      children = json.decode(response.body)["articles"];
+      children = json.decode(response.body)["articles"] ;
 //      data = children["source"];
 
       debugPrint(children.length.toString());
@@ -128,7 +128,7 @@ class _MainFetchDataState extends State<MainFetchData> {
 
 
   final makeBody = Container(
-    child: ListView.builder(
+    child:ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount:value ,

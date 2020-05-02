@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -13,18 +12,16 @@ import 'Fetch_data_list.dart';
 import 'Database.dart';
 //import 'Home.dart';
 
-
 void main() => runApp(MyApp());
-var db=new DatabaseHelper();
+var db = new DatabaseHelper();
+
 class MyApp extends StatelessWidget {
 //  @override
 //  HomeScreen createState() => new HomeScreen();
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-        home: new HomeScreen());
-
+    return new MaterialApp(home: new HomeScreen());
   }
 }
 
@@ -34,99 +31,95 @@ class MyApp extends StatelessWidget {
   *
  */
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
 //just trying to commit
-static List code=List() ;
+  static List code = List();
+
 //  BuildContext ctxt=context;
   @override
   Widget build(BuildContext context) {
- /*   return MaterialApp(
+    /*   return MaterialApp(
         title: 'News Application',
         home:*/
 
-      return new Scaffold(
-
-          appBar: AppBar(title: Text("Choose Country"),
-          actions: <Widget>[
-
-            IconButton(
+    return new Scaffold(
+      appBar: AppBar(
+        title: Text("Choose Country"),
+        actions: <Widget>[
+          IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
 //                BuildContext ctxt=context;
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CountriesList())
-                );
-              }
-            ),
-            IconButton(
-                icon: Icon(Icons.warning),
-                onPressed: () {
-//                BuildContext ctxt=context;
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CoronaVirusPage())
-                  );
-                }
-            )
+                    MaterialPageRoute(builder: (context) => CountriesList()));
+              })
+        ],
+      ),
+      body: FutureBuilder<List>(
+        future: db.getAllCountries(),
+        initialData: List(),
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (_, int position) {
+                    final item = snapshot.data[position];
 
-
-          ],
-          ),
-
-              body: FutureBuilder<List>(
-                future: db.getAllCountries(),
-                initialData: List(),
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (_, int position) {
-                      final item = snapshot.data[position];
-
-                      //get your item data here ...
-                      return Card(
-                        child: ListTile(
-                            title: Text(item.row[0]),
-                            trailing: GestureDetector(onTap: (){debugPrint("Delete");
-                            db.deleteCountry(item.row[0].toString());
-                            Navigator.pushReplacement(
+                    //get your item data here ...
+                    return Card(
+                      child: ListTile(
+                          title: Text(item.row[0]),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _deleteCountry(item.row[0].toString());
+                              });
+                              /*Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
                                     HomeScreen())
-                            );},
-                                  child: Container(
-                          width: 48,
-                          height: 48,
-                          padding: EdgeInsets.symmetric(vertical: 4.0),
-                          alignment: Alignment.center,
-                          child: Icon(Icons.delete),
-                        ),
+                            );}*/
+                            },
+                            child: Container(
+                              width: 48,
+                              height: 48,
+                              padding: EdgeInsets.symmetric(vertical: 4.0),
+                              alignment: Alignment.center,
+                              child: Icon(Icons.delete),
                             ),
-                            onTap: () {
-                              String cn;
-                              Future<String> cc=_getCode(item.row[0]);
-                              cc.then((cn){
-                              debugPrint("--------cn---------"+cn.toString());
+                          ),
+                          onTap: () {
+                            String cn;
+                            Future<String> cc = _getCode(item.row[0]);
+                            cc.then((cn) {
+                              debugPrint("--------cn---------" + cn.toString());
                               Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) =>
-                                      MainFetchData(text: cn.toString()))
-                              );
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MainFetchData(text: cn.toString())));
                             });
-                                  }
-                        ),
-                      );
-                    },
-                  )
-                      : Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-      );
+                          }),
+                    );
+                  },
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
+        },
+      ),
+    );
 
 //Trying
 //              getListView(),
-      /*   floatingActionButton: FloatingActionButton(
+    /*   floatingActionButton: FloatingActionButton(
 //       Padding(
 //            padding: const EdgeInsets.all(8.0),
             child: RaisedButton(
@@ -144,18 +137,18 @@ static List code=List() ;
 //        )
 //    );
   }
+
 /*  getListView() async{
 
   }*/
 
- Future<String> _getCode(String name) async{
-    String url="https://restcountries.eu/rest/v2/name/"+name;
-    final response1 =
-    await http.get(url);
+  Future<String> _getCode(String name) async {
+    String url = "https://restcountries.eu/rest/v2/name/" + name;
+    final response1 = await http.get(url);
     if (response1.statusCode == 200) {
       code = json.decode(response1.body);
       debugPrint(code[0].toString());
-     return code[0]['alpha2Code'];
+      return code[0]['alpha2Code'];
 
 //      data = children["source"];
 //      alpha2Code
@@ -169,7 +162,12 @@ static List code=List() ;
 
     // https://restcountries.eu/rest/v2/name/{name}
   }
+}
 
+void _deleteCountry(String row) {
+  debugPrint("Delete");
+
+  db.deleteCountry(row);
 }
 
 //
