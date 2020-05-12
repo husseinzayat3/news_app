@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'Database.dart';
 import 'dart:convert';
 import 'package:news_app/DetailsPage.dart';
-//import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 var db=new DatabaseHelper();
 String base_url = "https://newsapi.org/v2/top-headlines?country=";
@@ -12,6 +11,7 @@ String tech_api_key="&category=technology&apiKey=4bddb6a967614bc787b6f52c7a17838
 //int x=1;
 String sport_api_key="&category=sports&apiKey=4bddb6a967614bc787b6f52c7a178382";
 String no_image="upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
+
 //https://newsapi.org/v2/top-headlines?country=de&apiKey=4bddb6a967614bc787b6f52c7a178382
 String api_key;
 int value=10;
@@ -36,18 +36,8 @@ class _MainFetchDataState extends State<MainFetchData> {
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _currentCat;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = ScrollController();
-    _controller.addListener(_scrollListener);
 
-    _dropDownMenuItems = getDropDownMenuItems();
-    _currentCat = _dropDownMenuItems[0].value;
-    _fetchData();
-//    api_key=all_api_key;
 
-  }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = new List();

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:news_app/CoronaVirusPage.dart';
+import 'package:news_app/CountriesService.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:path/path.dart';
@@ -104,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           onTap: () {
                             String cn;
-                            Future<String> cc = _getCode(item.row[0]);
+                            Future<String> cc = CountriesService.getCode(item.row[0]);
                             cc.then((cn) {
                               debugPrint("--------cn---------" + cn.toString());
                               Navigator.push(
@@ -149,26 +150,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   }*/
 
-  Future<String> _getCode(String name) async {
-    String url = "https://restcountries.eu/rest/v2/name/" + name;
-    final response1 = await http.get(url);
-    if (response1.statusCode == 200) {
-      code = json.decode(response1.body);
-      debugPrint(code[0].toString());
-      return code[0]['alpha2Code'];
-
-//      data = children["source"];
-//      alpha2Code
-//      return code[0]['alpha2Code'];
-//      print(children.runtimeType.toString());
-//      print(children['data'].toString());
-
-    } else {
-      throw Exception('Failed to load photos');
-    }
 
     // https://restcountries.eu/rest/v2/name/{name}
-  }
+
 }
 
 void _deleteCountry(String row) {
