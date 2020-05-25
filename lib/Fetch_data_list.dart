@@ -124,16 +124,26 @@ class _MainFetchDataState extends State<MainFetchData> {
       print('bottom111');
     }
   }
+  String SplitTime(String time) {
+
+    return time;
+  }
+
 
 
 
   final makeBody = Container(
+
     child:ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount:value ,
       controller: _controller,
       itemBuilder: (BuildContext context, int index) {
+
+        List<String> PublishedTimeSplit = children[index]['publishedAt'].split('T');
+        String PublishedTime=PublishedTimeSplit[0]+" at "+PublishedTimeSplit[1].split("Z")[0];
+
         return Card(
           elevation: 8.0,
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
@@ -151,6 +161,7 @@ class _MainFetchDataState extends State<MainFetchData> {
                   child:Image.network(children[index]['urlToImage']!=null?children[index]['urlToImage']:no_image,width:80 ,height: 80),
 //                  Icon(Icons.autorenew, color: Colors.white),
                 ),
+
                 title: Text(
                   children[index]['title']
 //                      ? children[index]['source']['name']
@@ -162,10 +173,11 @@ class _MainFetchDataState extends State<MainFetchData> {
                 ),
                 // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
                 subtitle: Column(
+
                   children: <Widget>[
 //                    Icon(Icons.linear_scale, color: Colors.yellowAccent),
                     Text(children[index]['source']['id']!=null ?children[index]['source']['id']:children[index]['source']['name'],style: TextStyle(color: Colors.white),),
-                    Text(children[index]['publishedAt'], style: TextStyle(color: Colors.white))
+                    Text(PublishedTime, style: TextStyle(color: Colors.white))
                   ],
                 ),
                 trailing:
@@ -207,6 +219,10 @@ class _MainFetchDataState extends State<MainFetchData> {
           padding: const EdgeInsets.all(8.0),
           child: RaisedButton(
             child: new Text("Refresh"),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side: BorderSide(color: Colors.blueAccent)
+            ),
             onPressed: _fetchData,
           ),
         ),
@@ -218,6 +234,7 @@ class _MainFetchDataState extends State<MainFetchData> {
 
 
   }
+
 
   void changedDropDownItem(String category) {
     setState(() {
