@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_app/CoronaFullStat.dart';
 
 
 int value=6;
@@ -38,6 +39,15 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
       appBar: AppBar(
         title: Text("Coronavirus Statistics"),
         actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.arrow_forward_ios),
+              onPressed: () {
+//                BuildContext ctxt=context;
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CoronaFullstatPage())
+                );
+              }
+          ),
 
 
         ],),
