@@ -40,17 +40,20 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
         title: Text("Coronavirus Statistics"),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-//                BuildContext ctxt=context;
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CoronaFullstatPage())
-                );
-              }
-          ),
+      icon: Icon(Icons.search),
+        onPressed: () {
+          showSearch(
+            context: context,
+            delegate: DataSearch(),
+          );
+        })
 
 
-        ],),
+
+        ],
+    ),
+      drawer: Drawer(),
+
       body: isLoading!=false
           ? Center(
         child: CircularProgressIndicator(),
@@ -63,6 +66,12 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
 
 //    );
   }
+
+
+
+
+
+
   var isLoading = false;
 
   _fetchData() async {
@@ -70,6 +79,15 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
 
       isLoading = true;
     });
+    String api_url_country = "https://api.covid19api.com/summary";
+    final response1 =
+    await http.get(api_url_country);
+    debugPrint("-----print------");
+    if (response1.statusCode == 200) {
+      debugPrint("-----print1------");
+      print(response1.body);
+      //save the response body or find a different api
+    }
 
     String api_url = "https://api.thevirustracker.com/free-api?global=stats";
 
@@ -180,11 +198,123 @@ I/flutter (28996):          "total_affected_countries":212,
   }
 }
 
+
 class Stat {
   String key;
   int value;
   Stat(this.key, this.value){
 
   }
-  
+
+
+
 }
+class DataSearch extends SearchDelegate<String> {
+  final cities = ['Italy', 'Germany', 'Lebanon', 'United States', 'China'];
+  var recentCities = ['Italy','Germany','Lebanon'];
+  static List code=List() ;
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            query = "";
+          })
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,
+        ),
+        onPressed: () {
+          close(context, null);
+        });
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    debugPrint("-----------"+query);
+    String cn;
+    Future<String> cc=_getCode(query);
+    cc.then((cn){
+      debugPrint("--------cn---------"+cn.toString());
+
+    });
+    //here we can show the results once we find the api
+
+
+    return Center(
+      child: Container(
+        //here we show the results
+        width: 100,
+        height: 100,
+        child: Card(
+          color: Colors.red,
+          child: Center(child: Text(query)),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final suggestionList = query.isEmpty
+        ? recentCities
+        : cities.where((p) => p.startsWith(query)).toList();
+
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {
+          showResults(context);
+        },
+        leading: Icon(Icons.location_city),
+        title: RichText(
+          text: TextSpan(
+            text: suggestionList[index].substring(0, query.length),
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            children: [
+              TextSpan(
+                text: suggestionList[index].substring(query.length),
+              ),
+            ],
+          ),
+        ),
+      ),
+      itemCount: suggestionList.length,
+    );
+  }
+
+
+  Future<String> _getCode(String name) async{
+    String url="https://restcountries.eu/rest/v2/name/"+name;
+    final response1 =
+    await http.get(url);
+    if (response1.statusCode == 200) {
+      code = json.decode(response1.body);
+      debugPrint(code[0].toString());
+      return code[0]['alpha2Code'];
+
+//      data = children["source"];
+//      alpha2Code
+//      return code[0]['alpha2Code'];
+//      print(children.runtimeType.toString());
+//      print(children['data'].toString());
+
+    } else {
+      throw Exception('Failed to load photos');
+    }
+
+    // https://restcountries.eu/rest/v2/name/{name}
+  }
+}
+
+
