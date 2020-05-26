@@ -28,7 +28,43 @@ class _CoronaFullstatState  extends State<CoronaFullstatPage> {
 
 
 
-        ],),
+        ],
+      ),
+        body: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 10.0),
+        child: Column(
+            children: <Widget>[
+
+              TextField(
+
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.blueAccent,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    hintText: "Enter Country",
+
+                  )),
+              RaisedButton(
+                child: Text("Search"),
+                onPressed: (){
+//
+//                  Navigator.push(
+//                      context,
+//                      MaterialPageRoute(builder: (context) =>
+//                          HomeScreen()));
+                },
+              )
+
+
+          ]
+
+        )
+        )
+
+
 //      body: isLoading!=false
 //         ? Center(
 //        child: CircularProgressIndicator(),

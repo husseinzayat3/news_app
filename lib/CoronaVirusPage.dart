@@ -40,7 +40,7 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
         title: Text("Coronavirus Statistics"),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.arrow_forward_ios),
+              icon: Icon(Icons.search),
               onPressed: () {
 //                BuildContext ctxt=context;
                 Navigator.push(context,
