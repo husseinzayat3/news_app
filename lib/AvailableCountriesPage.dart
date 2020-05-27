@@ -26,7 +26,8 @@ class _CountriesListState extends State<CountriesList> {
     "Germany",
     "USA",
     "France",
-    "China"
+    "China",
+    "United Kingdom"
   ];
 
   @override
@@ -41,12 +42,17 @@ class _CountriesListState extends State<CountriesList> {
     ),
 
     body: Container(
+        margin: const EdgeInsets.only(top:60.0),
+        alignment: Alignment.center,
+
+
     child: Column(
 
       children: <Widget>[
           DropdownButton(
             value: fav_country,
             items: _countries,
+
             onChanged: (value){
               setState(() {
                 fav_country = value;
@@ -55,6 +61,10 @@ class _CountriesListState extends State<CountriesList> {
           ),
           RaisedButton(
             child: Text("Add Country!"),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side: BorderSide(color: Colors.blueAccent)
+            ),
             onPressed: (){
               print('countryyyy_____----->'+ fav_country);
               db.insert(0, fav_country);
