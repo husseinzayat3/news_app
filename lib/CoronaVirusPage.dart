@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +25,14 @@ class CoronaVirusPage extends StatefulWidget {
 
 
 List<Stat> data= [];
+List<Stat> Country_data=[];
 class _CoronaVirusPageState extends State<CoronaVirusPage> {
 
   static var children;
+
   List<Stat> products = [];
   static Map<String, dynamic> tmp;
+
 
 
 
@@ -79,15 +83,7 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
 
       isLoading = true;
     });
-    String api_url_country = "https://api.covid19api.com/summary";
-    final response1 =
-    await http.get(api_url_country);
-    debugPrint("-----print------");
-    if (response1.statusCode == 200) {
-      debugPrint("-----print1------");
-      print(response1.body);
-      //save the response body or find a different api
-    }
+
 
     String api_url = "https://api.thevirustracker.com/free-api?global=stats";
 
@@ -213,6 +209,8 @@ class DataSearch extends SearchDelegate<String> {
   final cities = ['Italy', 'Germany', 'Lebanon', 'United States', 'China'];
   var recentCities = ['Italy','Germany','Lebanon'];
   static List code=List() ;
+  static var  Country_children;
+  static Map<String,dynamic > tmp1;
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -244,20 +242,50 @@ class DataSearch extends SearchDelegate<String> {
     Future<String> cc=_getCode(query);
     cc.then((cn){
       debugPrint("--------cn---------"+cn.toString());
-
+      _getValues(cn.toString());
     });
+
+
+
     //here we can show the results once we find the api
 
 
     return Center(
       child: Container(
-        //here we show the results
-        width: 100,
-        height: 100,
-        child: Card(
-          color: Colors.red,
-          child: Center(child: Text(query)),
-        ),
+//        child: ListView.builder(
+//          scrollDirection: Axis.vertical,
+//          shrinkWrap: true,
+//          itemCount: 6 ,
+////      controller: _controller,
+//          itemBuilder: (BuildContext context, int index) {
+//            return Card(
+//                elevation: 8.0,
+//                margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+//                child: Container(
+//                    decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+//                    child: ListTile(
+//                      contentPadding: EdgeInsets.symmetric(
+//                          horizontal: 20.0, vertical: 10.0),
+//
+//                      title: Text(Country_data[index].key.toString()
+//                        // TODO: APIValueKEY
+//                        ,
+//                        maxLines: 2,
+//                        style: TextStyle(
+//                            color: Colors.white, fontWeight: FontWeight.bold),
+//                      ),
+////              trailing: Text( children["total_cases"].toString(), style: TextStyle(fontSize: 15, color: Colors.white),),
+//                      trailing: Text( Country_data[index].value.toString(), style: TextStyle(fontSize: 15, color: Colors.white),),
+//                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white))
+//                    )
+//                )
+//            );
+//
+//
+//
+////                debugPrint("-----------"+x.toString());
+//          },
+//        ),
       ),
     );
   }
@@ -315,6 +343,55 @@ class DataSearch extends SearchDelegate<String> {
 
     // https://restcountries.eu/rest/v2/name/{name}
   }
+  Future<Void> _getValues(String name) async{
+    String api_url_country = "https://api.thevirustracker.com/free-api?countryTotal="+name;
+    debugPrint("----apii---"+api_url_country);
+    final response =
+    await http.get(api_url_country);
+    if (response.statusCode == 200) {
+      try {
+        Country_children = json.decode(response.body)["countrydata"];
+      }
+      on Exception{
+
+      }
+      debugPrint("------Countr----"+Country_children);
+      tmp1 = Country_children;
+      print(tmp1["total_active_cases"]);
+      Country_data.add(new Stat("Total Cases",tmp1["total_cases"]));
+      Country_data.add(new Stat("Total Active Cases",tmp1["total_active_cases"]));
+      Country_data.add(Stat("Total Recovered",tmp1["total_recovered"]));
+      Country_data.add(Stat("Total Deaths",tmp1["total_deaths"]));
+      Country_data.add(Stat("Total New Cases Today",tmp1["total_new_cases_today"]));
+      Country_data.add(Stat("Total New Deaths Today",tmp1["total_new_deaths_today"]));
+      debugPrint(Country_data.toString());
+    }
+
+
+
+
+//      {
+//        "countrydata":[
+//    {
+//    "info":{
+//    "ourid":167,
+//    "title":"USA",
+//    "code":"US",
+//    "source":"https://thevirustracker.com/usa-coronavirus-information-us"
+//    },
+//    "total_cases":1749657,
+//    "total_recovered":490256,
+//    "total_unresolved":0,
+//    "total_deaths":102241,
+//    "total_new_cases_today":3854,
+//    "total_new_deaths_today":134,
+//    "total_active_cases":1157160,
+//    "total_serious_cases":17227,
+//    "total_danger_rank":1}],
+//    "stat":"ok"}
+  }
+
+
 }
 
 
