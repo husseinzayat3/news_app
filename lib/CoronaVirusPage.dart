@@ -67,8 +67,6 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
 
       );
 
-
-//    );
   }
 
 
@@ -100,34 +98,9 @@ class _CoronaVirusPageState extends State<CoronaVirusPage> {
       data.add(Stat("Total Recovered",tmp["total_recovered"]));
       data.add(Stat("Total Deaths",tmp["total_deaths"]));
       data.add(Stat("Total Affected Countries",tmp["total_affected_countries"]));
-      print(data);
-
-/*
- "total_cases":3363945,
-I/flutter (28996):          "total_recovered":1069036,
-I/flutter (28996):          "total_unresolved":2039891,
-I/flutter (28996):          "total_deaths":237458,
-I/flutter (28996):          "total_new_cases_today":60024,
-I/flutter (28996):          "total_new_deaths_today":3634,
-I/flutter (28996):          "total_active_cases":2057451,
-I/flutter (28996):          "total_serious_cases":50109,
-I/flutter (28996):          "total_affected_countries":212,
- */
-
-//      Stat myProduct = Stat("Total Recovered", children["total_recovered"]);
-//      products.add(myProduct);
 
 
 
-
-//      data = children["source"];
-
-//      debugPrint(children.length.toString());
-
-//      value=children.length;
-
-//      print(children.runtimeType.toString());
-//      print(children['data'].toString());
       setState(() {
         isLoading = false;
       });
@@ -206,8 +179,8 @@ class Stat {
 
 }
 class DataSearch extends SearchDelegate<String> {
-  final cities = ['Italy', 'Germany', 'Lebanon', 'United States', 'China'];
-  var recentCities = ['Italy','Germany','Lebanon'];
+  final cities = [];
+  var recentCities = [];
   static List code=List() ;
   static var  Country_children;
   static Map<String,dynamic > tmp1;
@@ -225,6 +198,7 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
+
     return IconButton(
         icon: AnimatedIcon(
           icon: AnimatedIcons.menu_arrow,
@@ -233,59 +207,58 @@ class DataSearch extends SearchDelegate<String> {
         onPressed: () {
           close(context, null);
         });
+
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    debugPrint("-----------"+query);
+    //query is what was written in the search bar
     String cn;
     Future<String> cc=_getCode(query);
     cc.then((cn){
-      debugPrint("--------cn---------"+cn.toString());
-      _getValues(cn.toString());
+   
+        _getValues(cn.toString());
+
     });
 
 
 
-    //here we can show the results once we find the api
 
 
     return Center(
       child: Container(
-//        child: ListView.builder(
-//          scrollDirection: Axis.vertical,
-//          shrinkWrap: true,
-//          itemCount: 6 ,
-////      controller: _controller,
-//          itemBuilder: (BuildContext context, int index) {
-//            return Card(
-//                elevation: 8.0,
-//                margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-//                child: Container(
-//                    decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-//                    child: ListTile(
-//                      contentPadding: EdgeInsets.symmetric(
-//                          horizontal: 20.0, vertical: 10.0),
-//
-//                      title: Text(Country_data[index].key.toString()
-//                        // TODO: APIValueKEY
-//                        ,
-//                        maxLines: 2,
-//                        style: TextStyle(
-//                            color: Colors.white, fontWeight: FontWeight.bold),
-//                      ),
-////              trailing: Text( children["total_cases"].toString(), style: TextStyle(fontSize: 15, color: Colors.white),),
-//                      trailing: Text( Country_data[index].value.toString(), style: TextStyle(fontSize: 15, color: Colors.white),),
-//                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white))
-//                    )
-//                )
-//            );
-//
-//
-//
-////                debugPrint("-----------"+x.toString());
-//          },
-//        ),
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: 6 ,
+//      controller: _controller,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+                elevation: 8.0,
+                margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                child: Container(
+                    decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+
+                      title: Text(Country_data[index].key.toString()
+                        // TODO: APIValueKEY
+                        ,
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+//              trailing: Text( children["total_cases"].toString(), style: TextStyle(fontSize: 15, color: Colors.white),),
+                      trailing: Text( Country_data[index].value.toString(), style: TextStyle(fontSize: 15, color: Colors.white),),
+                      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white))
+                    )
+                )
+            );
+
+
+          },
+        ),
       ),
     );
   }
@@ -331,31 +304,22 @@ class DataSearch extends SearchDelegate<String> {
       debugPrint(code[0].toString());
       return code[0]['alpha2Code'];
 
-//      data = children["source"];
-//      alpha2Code
-//      return code[0]['alpha2Code'];
-//      print(children.runtimeType.toString());
-//      print(children['data'].toString());
 
     } else {
       throw Exception('Failed to load photos');
     }
 
-    // https://restcountries.eu/rest/v2/name/{name}
   }
   Future<Void> _getValues(String name) async{
+
     String api_url_country = "https://api.thevirustracker.com/free-api?countryTotal="+name;
-    debugPrint("----apii---"+api_url_country);
     final response =
     await http.get(api_url_country);
     if (response.statusCode == 200) {
-      try {
-        Country_children = json.decode(response.body)["countrydata"];
-      }
-      on Exception{
 
-      }
-      debugPrint("------Countr----"+Country_children);
+        Country_children = json.decode(response.body)["countrydata"][0];
+
+
       tmp1 = Country_children;
       print(tmp1["total_active_cases"]);
       Country_data.add(new Stat("Total Cases",tmp1["total_cases"]));
@@ -364,32 +328,15 @@ class DataSearch extends SearchDelegate<String> {
       Country_data.add(Stat("Total Deaths",tmp1["total_deaths"]));
       Country_data.add(Stat("Total New Cases Today",tmp1["total_new_cases_today"]));
       Country_data.add(Stat("Total New Deaths Today",tmp1["total_new_deaths_today"]));
-      debugPrint(Country_data.toString());
+
+    }else{
+      debugPrint("------ API error");
+
     }
 
 
-
-
-//      {
-//        "countrydata":[
-//    {
-//    "info":{
-//    "ourid":167,
-//    "title":"USA",
-//    "code":"US",
-//    "source":"https://thevirustracker.com/usa-coronavirus-information-us"
-//    },
-//    "total_cases":1749657,
-//    "total_recovered":490256,
-//    "total_unresolved":0,
-//    "total_deaths":102241,
-//    "total_new_cases_today":3854,
-//    "total_new_deaths_today":134,
-//    "total_active_cases":1157160,
-//    "total_serious_cases":17227,
-//    "total_danger_rank":1}],
-//    "stat":"ok"}
   }
+
 
 
 }
